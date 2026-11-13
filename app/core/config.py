@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int
 
     REDIS_URL: str
+    TELEGRAM_BOT_TOKEN: str
 
     @property
     def DATABASE_URL(self) -> str:
