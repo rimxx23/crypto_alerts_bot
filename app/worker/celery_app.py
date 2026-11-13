@@ -4,7 +4,7 @@ from celery import Celery
 
 from app.core.config import get_settings
 from app.services.alert_checker import run_check
-from app.services.exchange import get_price
+from app.services.notifier import send_notifications
 
 
 settings = get_settings()
@@ -19,8 +19,11 @@ celery_app.conf.beat_schedule = {
 }
 
 
+async def check_and_notify():
+    triggered = await run_check()
+    await send_notifications(triggered)
+
+
 @celery_app.task
 def check_alerts():
-    triggered = asyncio.run(run_check())
-    for alert in triggered:
-        print(f"{alert.symbol} {alert.direction.value} {alert.target_price}")
+    asyncio.run(check_and_notify())

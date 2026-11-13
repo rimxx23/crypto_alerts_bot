@@ -1,7 +1,10 @@
+from decimal import Decimal
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
-from app.models.alert import AlertORM
+from app.models.alert import AlertORM, Direction
 
 
 class AlertRepository:
@@ -9,4 +12,14 @@ class AlertRepository:
         self.db = db
 
     async def get_active(self) -> list[AlertORM]:
-        return (await self.db.scalars(select(AlertORM).where(AlertORM.is_active == True))).all()
+        query = (
+            select(AlertORM)
+            .options(selectinload(AlertORM.user))
+            .where(AlertORM.is_active.is_(True))
+        )
+        return (await self.db.scalars(query)).all()
+
+    async def create(self, user_id: str, symbol: str, target_price: Decimal, direction: Direction) -> AlertORM:
+        new_alert = AlertORM(user_id=user_id, symbol=symbol, target_price=target_price, direction=direction)
+        self.db.add(new_alert)
+        return new_alert
