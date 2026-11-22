@@ -13,6 +13,8 @@ class Settings(BaseSettings):
 
     REDIS_URL: str
     TELEGRAM_BOT_TOKEN: str
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = ""
 
     @property
     def DATABASE_URL(self) -> str:

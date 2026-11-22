@@ -34,6 +34,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       REDIS_URL: redis://redis:6379/0
+      OLLAMA_BASE_URL: ${OLLAMA_DOCKER_BASE_URL:-http://host.docker.internal:11434}
     command: sh -c "alembic upgrade head && python -m app.bot.main"
     depends_on: &depends
       db:

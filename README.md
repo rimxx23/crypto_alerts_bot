@@ -112,3 +112,14 @@ crypto-alerts/
 ├── Dockerfile
 └── requirements.txt
 ```
+
+
+## AI alerts from plain text
+
+The bot sends your message and current draft to Ollama. The model returns the trading pair, direction, and target price as JSON. The bot asks for missing details and saves the alert when you click **Create**. Use `/cancel` to clear the draft. Drafts live in memory and are cleared when the bot restarts.
+
+1. Start Ollama and download a model that supports structured JSON, such as `ollama pull qwen2.5:3b`.
+2. Add `OLLAMA_MODEL=qwen2.5:3b` to `.env`. For a local Python process, the default address is `http://localhost:11434` and can be overridden with `OLLAMA_BASE_URL`. Docker Compose defaults to `http://host.docker.internal:11434` and uses `OLLAMA_DOCKER_BASE_URL` as its override. The address must be reachable by the bot.
+3. Restart the bot. In a private chat, send `/start`, then “Notify me if ETH goes up”, then “3500”. The bot should preview `ETHUSDT > 3500`.
+
+If `OLLAMA_MODEL` is empty, you can still create alerts with `/alert`.

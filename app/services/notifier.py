@@ -17,7 +17,7 @@ async def send_notifications(alerts: list[AlertORM]) -> None:
             try:
                 await bot.send_message(
                     chat_id=alert.user.telegram_id,
-                    text=f"{alert.symbol} {sign} {alert.target_price} — сработало!",
+                    text=f"{alert.symbol} {sign} {alert.target_price} — price alert triggered!",
                 )
             except TelegramAPIError as error:
-                logger.warning("Не удалось отправить алерт %s: %s", alert.id, error)
+                logger.warning("Could not send alert %s: %s", alert.id, error)

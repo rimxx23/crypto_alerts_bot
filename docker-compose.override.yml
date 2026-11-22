@@ -1,0 +1,6 @@
+# The bot and workers use PostgreSQL and Redis over the Compose network.
+services:
+  db:
+    ports: !reset []
+  redis:
+    ports: !reset []
